@@ -12,7 +12,10 @@ _deps
 CMakeUserPresets.json
 
 .DS_Store
+.vscode
+imgui.ini
 logs
+bin
 
 # CLion
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
