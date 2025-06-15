@@ -22,7 +22,7 @@ This emulator was primarily written for educational purposes, so don't expect an
 
 <img alt="Link's Awakening Demo" src="zelda_demo.gif" width="400" />
 
-(The actual emulator looks less choppy)
+(The actual emulator is less choppy)
 
 ## Features
 
