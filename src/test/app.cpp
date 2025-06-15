@@ -68,8 +68,8 @@ void App::start(std::string bootROMPath, std::string romPath)
 
     // this->gameboy.createGameBoyDoctorLog();
 
-    this->gameboy.loadBootROM(bootROMPath);
     this->gameboy.loadROM(romPath);
+    this->gameboy.loadBootROM(bootROMPath);
 }
 
 void App::update()

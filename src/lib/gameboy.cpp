@@ -18,7 +18,9 @@ void GameBoy::reboot()
     this->cart.restart();
     this->joypad.restart();
 
-    this->loadBootROM(this->bootROMPath);
+    if(!GameBoy::skipBootROM)
+        this->loadBootROM(this->bootROMPath);
+
     this->loadROM(this->romPath);
 }
 
@@ -54,11 +56,37 @@ void GameBoy::loadBootROM(std::string path)
     this->bootROMPath = path;
 
     FILE* file = fopen(path.c_str(), "rb");
-    u32 pos = 0;
-    while(fread(&this->bus.bootRom[pos], 1, 1, file))
+
+    if(!file)
     {
-        ++pos;
+        fprintf(stderr, "ERROR::CART::COULD_NOT_OPEN_BOOT_ROM_FILE");
+        GameBoy::skipBootROM = true;
+        this->reboot();
+        return;
     }
+
+    fseek(file, 0, SEEK_END);
+    size_t size = ftell(file);
+    rewind(file);
+
+    if(size != 256)
+    {
+        fprintf(stderr, "ERROR::CART::INCOMPATIBLE_BOOT_ROM");
+        fclose(file);
+        GameBoy::skipBootROM = true;
+        this->reboot();
+        return;
+    }
+
+    if(fread(this->bus.bootRom, sizeof(u8), size, file) != size)
+    {
+        fprintf(stderr, "ERROR:CART::COULD_NOT_LOAD_BOOT_ROM_FROM_FILE");
+        fclose(file);
+        GameBoy::skipBootROM = true;
+        this->reboot();
+        return;
+    }
+
     fclose(file);
 }
 
@@ -70,7 +98,7 @@ void GameBoy::loadROM(std::string path)
 
     if(!file)
     {
-        fprintf(stderr, "ERROR::CART::COULD_NOT_OPEN_FILE");
+        fprintf(stderr, "ERROR::CART::COULD_NOT_OPEN_ROM_FILE");
     }
 
     fseek(file, 0, SEEK_END);
