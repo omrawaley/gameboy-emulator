@@ -20,6 +20,7 @@ This emulator was primarily written for educational purposes, so don't expect an
 
 ## Demo
 
+<img alt="Link's Awakening Demo" src="zelda_demo.gif" width="400" />
 
 ## Features
 
