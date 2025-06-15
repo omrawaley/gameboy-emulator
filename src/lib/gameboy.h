@@ -14,6 +14,9 @@
 class GameBoy
 {
     private:
+        std::string bootROMPath;
+        std::string romPath;
+
         Bus bus;
         Cart cart;
         CPU cpu;
@@ -24,9 +27,6 @@ class GameBoy
 
     public:
         static bool skipBootROM;
-
-        std::string bootROMPath;
-        std::string romPath;
 
         GameBoy();
 
