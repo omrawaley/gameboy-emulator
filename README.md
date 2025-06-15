@@ -81,6 +81,7 @@ make
 - Rewrite the PPU to improve time complexity
 - Add MBC3, MBC2, and MBC5 support
 - Add the ability to view the serial port via the GUI
+- Add a proper error collector/reporter
 ## Contributing
 
 Contributions are always welcome! I'd love to learn how I can improve this emulator.
