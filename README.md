@@ -74,15 +74,15 @@ make
 <kbd>Esc</kbd> Quit the program.
 ## To-Do
 
-- Add more CLI options
-- Add a debugger to view internal state and the bus
-- Add the ability to take screenshots
-- Add more robust palette handling
-- Rewrite the PPU to improve time complexity
-- Add MBC3, MBC2, and MBC5 support
-- Add the ability to view the serial port via the GUI
-- Add a proper error collector/reporter
-- Format code to expose public functions first
+- [ ] Add more CLI options
+- [ ] Add a debugger to view internal state and the bus
+- [ ] Add the ability to take screenshots
+- [ ] Add more robust palette handling
+- [ ] Rewrite the PPU to improve time complexity
+- [ ] Add MBC3, MBC2, and MBC5 support
+- [ ] Add the ability to view the serial port via the GUI
+- [x] Add a proper error collector/reporter
+- [ ] Format code to expose public functions first
 ## Contributing
 
 Contributions are always welcome! I'd love to learn how I can improve this emulator.
