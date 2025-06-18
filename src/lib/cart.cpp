@@ -1,5 +1,9 @@
 #include "cart.h"
 
+#ifdef ERROR
+    #include "error.h"
+#endif
+
 Cart::Cart()
 {
     this->restart();
@@ -52,7 +56,9 @@ void Cart::createMBC()
         // case Type::HuC1_RAM_BATTERY:
         //     break;
         default:
-            fprintf(stderr, "ERROR::CART::MBC::UNIMPLEMENTED_MBC\n");
+            #ifdef ERROR
+                ErrorCollector::reportFatalError("UNIMPLEMENTED_MBC", ErrorModule::Cart);
+            #endif
             exit(EXIT_FAILURE);
             break;
     }

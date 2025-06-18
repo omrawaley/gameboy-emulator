@@ -25,6 +25,7 @@ add_executable(gb
     src/lib/interrupts.cpp 
     src/lib/util.cpp 
     src/lib/mbc.cpp
+    src/lib/error.cpp
     deps/imgui/imgui.cpp
     deps/imgui/imgui_widgets.cpp
     deps/imgui/imgui_widgets.cpp
@@ -34,6 +35,11 @@ add_executable(gb
     deps/imgui/backends/imgui_impl_sdl2.cpp
     deps/imgui/backends/imgui_impl_sdlrenderer2.cpp
 )
+
+option(ERROR "Enable error reporting" OFF)
+if(ERROR)
+    target_compile_definitions(gb PRIVATE ERROR)
+endif()
 
 target_link_libraries(gb PRIVATE SDL2::SDL2)
 target_link_libraries(gb PRIVATE SDL2_image::SDL2_image)

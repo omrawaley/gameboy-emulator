@@ -1,5 +1,9 @@
 #include "app.h"
 
+#ifdef ERROR
+    #include "../lib/error.h"
+#endif
+
 float App::refreshRatePeriod = 16.67;
 App::App() : window(nullptr), renderer(nullptr), displayTexture(nullptr), quit(false)
 {
@@ -13,6 +17,10 @@ App::~App()
     this->freeMedia();
 
     // this->gameboy.uninitNcurses();
+
+    #ifdef ERROR
+        ErrorCollector::printErrors(true);
+    #endif
 }
 
 void App::loadMedia()

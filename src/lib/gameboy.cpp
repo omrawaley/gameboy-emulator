@@ -2,10 +2,14 @@
 
 // #include <ncurses.h>
 
+#ifdef ERROR
+    #include "error.h"
+#endif
+
 bool GameBoy::skipBootROM = false;
-GameBoy::GameBoy() : bus(this->cart, this->cpu, this->timer, this->ppu, this->joypad, this->interrupts), cpu(this->bus, this->interrupts), timer(this->bus, this->interrupts), ppu(this->bus, this->interrupts), joypad(this->bus, this->interrupts)
-{
-    
+GameBoy::GameBoy() : bus(this->cart, this->cpu, this->timer, this->ppu, this->joypad, this->interrupts), cpu(this->bus, this->interrupts), timer(this->bus, this->interrupts), ppu(this->bus, this->interrupts), joypad(this->bus, this->interrupts) 
+{ 
+
 }
 
 void GameBoy::reboot()
@@ -59,7 +63,9 @@ void GameBoy::loadBootROM(std::string path)
 
     if(!file)
     {
-        fprintf(stderr, "ERROR::CART::COULD_NOT_OPEN_BOOT_ROM_FILE");
+        #ifdef ERROR
+            ErrorCollector::reportError("COULD_NOT_OPEN_BOOT_ROM_FILE", ErrorModule::GameBoy);
+        #endif
         GameBoy::skipBootROM = true;
         this->reboot();
         return;
@@ -71,7 +77,9 @@ void GameBoy::loadBootROM(std::string path)
 
     if(size != 256)
     {
-        fprintf(stderr, "ERROR::CART::INCOMPATIBLE_BOOT_ROM");
+        #ifdef ERROR
+            ErrorCollector::reportError("INCOMPATIBLE_BOOT_ROM", ErrorModule::GameBoy);
+        #endif
         fclose(file);
         GameBoy::skipBootROM = true;
         this->reboot();
@@ -80,7 +88,9 @@ void GameBoy::loadBootROM(std::string path)
 
     if(fread(this->bus.bootRom, sizeof(u8), size, file) != size)
     {
-        fprintf(stderr, "ERROR:CART::COULD_NOT_LOAD_BOOT_ROM_FROM_FILE");
+        #ifdef ERROR
+            ErrorCollector::reportError("COULD_NOT_LOAD_BOOT_ROM_FROM_FILE", ErrorModule::GameBoy);
+        #endif
         fclose(file);
         GameBoy::skipBootROM = true;
         this->reboot();
@@ -98,7 +108,9 @@ void GameBoy::loadROM(std::string path)
 
     if(!file)
     {
-        fprintf(stderr, "ERROR::CART::COULD_NOT_OPEN_ROM_FILE");
+        #ifdef ERROR
+            ErrorCollector::reportFatalError("COULD_NOT_OPEN_ROM_FILE", ErrorModule::GameBoy);
+        #endif
     }
 
     fseek(file, 0, SEEK_END);
@@ -109,7 +121,9 @@ void GameBoy::loadROM(std::string path)
 
     if(fread(buffer.get(), sizeof(u8), size, file) != size)
     {
-        fprintf(stderr, "ERROR:CART::COULD_NOT_LOAD_ROM_FROM_FILE");
+        #ifdef ERROR
+            ErrorCollector::reportFatalError("COULD_NOT_LOAD_ROM_FROM_FILE", ErrorModule::GameBoy);
+        #endif
         fclose(file);
         return;
     }
