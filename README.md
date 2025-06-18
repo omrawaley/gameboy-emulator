@@ -83,6 +83,7 @@ make
 - [ ] Add the ability to view the serial port via the GUI
 - [x] Add a proper error collector/reporter
 - [ ] Format code to expose public functions first
+- [ ] Remove the IO array in `bus.h` and handle unimplemented IO registers properly
 ## Contributing
 
 Contributions are always welcome! I'd love to learn how I can improve this emulator.
