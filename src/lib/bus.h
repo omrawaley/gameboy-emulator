@@ -17,7 +17,6 @@ class Bus
         u8 wram[0x2000];
         u8 oam[0xA0];
         u8 hram[0x7F];
-        u8 io[0x70];
 
         bool disableBootRom;
 

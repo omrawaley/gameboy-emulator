@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <iostream>
+#include <format>
 
 #include "cart.h"
 #include "cpu.h"
@@ -11,6 +12,7 @@
 #include "interrupts.h"
 #include "util.h"
 #include "gameboy.h"
+#include "error.h"
 
 Bus::Bus(Cart& cart, CPU& cpu, Timer& timer, PPU& ppu, Joypad& joypad, Interrupts& interrupts) : disableBootRom(false), cart(cart), cpu(cpu), timer(timer), ppu(ppu), joypad(joypad), interrupts(interrupts)
 {
@@ -24,7 +26,6 @@ void Bus::restart()
     memset(this->wram, 0, 0x2000);
     memset(this->oam, 0, 0xA0);
     memset(this->hram, 0, 0x7F);
-    memset(this->io, 0, 0x70);
 
     this->disableBootRom = GameBoy::skipBootROM ? true : false;
 }
@@ -124,12 +125,11 @@ u8 Bus::readByte(const u16 addr) const
             return this->interrupts.enable & 0x1F;
             break;
         default:
-            // std::cerr << "ERROR::BUS::INVALID_READ_ADDRESS " << std::hex << addr << std::endl;
+            #ifdef ERROR
+                ErrorCollector::reportError(std::format("INVALID_READ_ADDRESS {:X}\n", addr), ErrorModule::Bus);
+            #endif
             break;
     }
-
-    if(Util::isAddressBetween(addr, 0xFF00, 0xFF70))
-        return this->io[addr - 0xFF00];
 
     return 0xFF;
 }
@@ -243,12 +243,11 @@ void Bus::writeByte(const u16 addr, const u8 val)
             this->interrupts.enable = val & 0x1F;
             break;
         default:
-            // std::cerr << "ERROR::BUS::INVALID_WRITE_ADDRESS " << std::hex << addr << std::endl;
+            #ifdef ERROR
+                ErrorCollector::reportError(std::format("INVALID_WRITE_ADDRESS {:X}\n", addr), ErrorModule::Bus);
+            #endif
             break;
     }
-
-    if(Util::isAddressBetween(addr, 0xFF00, 0xFF70))
-        this->io[addr - 0xFF00] = val;
 }
 
 u16 Bus::readWord(const u16 addr) const
